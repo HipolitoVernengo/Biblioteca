@@ -6,6 +6,7 @@ import AdminPanel from './components/AdminPanel';
 import UserDashboard from './components/UserDashboard';
 import Login from './components/Login';
 import Register from './components/Register';
+import './App.css';
 
 // --- 1. DATOS DE EJEMPLO (Simulación de una base de datos) ---
 
@@ -24,11 +25,24 @@ const initialBooks = [
   { isbn: '978-8499086438', titulo: 'Don Quijote de la Mancha', autor: 'Miguel de Cervantes', estado: 'disponible', prestadoA_socioID: null, fechaDevolucionEstimada: null, fechaInicioPrestamo: null },
 ];
 
+// src/App.js (SOLO MODIFICAR ESTE BLOQUE)
+
+// ...
+// src/App.js (Asegúrate de que tus usuarios se vean así)
+
+// ...
+// src/App.js (SOLO MODIFICAR ESTE BLOQUE)
+
+// ...
 const initialUsers = [
-  // **NUEVA ESTRUCTURA:** Ahora incluimos 'multa' para los socios.
-  { id: 1, nombre: 'Ana García (Socio)', email: 'ana@socio.com', role: 'user', multa: 0 }, 
-  { id: 2, nombre: 'Admin Bibliotecario', email: 'admin@biblioteca.com', role: 'admin', multa: 0 }, 
+  // Añadido: password
+  { id: 1, nombre: 'Hipolito Vernengo (Socio)', email: 'user@user.com', dni: '11111111', role: 'user', multa: 0, password: 'user123' }, 
+  { id: 2, nombre: 'Admin Bibliotecario', email: 'admin@admin.com', dni: '99999999', role: 'admin', multa: 0, password: 'admin123' }, 
 ];
+// ...
+// ...
+
+// ...
 
 function App() {
   const [books, setBooks] = useState(initialBooks);
@@ -47,7 +61,7 @@ function App() {
             {!currentUser && <Link to="/register"> Registro</Link>}
             {currentUser && <button onClick={() => setCurrentUser(null)} style={{ marginLeft: '10px' }}>Cerrar Sesión</button>}
           </nav>
-          {currentUser && <p>Hola, **{currentUser.nombre}**!</p>}
+          {currentUser && <p>Hola, {currentUser.nombre} !</p>}
         </header>
 
         <main style={{ padding: '20px' }}>

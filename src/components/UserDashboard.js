@@ -6,8 +6,32 @@ const UserDashboard = ({ currentUser, books, setBooks }) => {
   const [selectedIsbn, setSelectedIsbn] = useState('');
   const [fechaFin, setFechaFin] = useState('');
 
+  // ------------------------------------------------------------------
+  // VALIDACIONES DE FECHA
+  // ------------------------------------------------------------------
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Establecer la hora a 00:00:00 para comparación
+
+  // Calcula la fecha de hoy para el atributo 'min' del input (YYYY-MM-DD)
+    const getTodayDateString = () => {
+    const d = new Date();
+    // Ajustar para obtener la fecha de mañana si es necesario, pero generalmente hoy es el mínimo.
+    return d.toISOString().split('T')[0];
+    };
+
+  // Calcula la fecha máxima permitida (hoy + 7 días)
+    const getMaxDateString = () => {
+    const d = new Date();
+    d.setDate(d.getDate() + 7);
+    return d.toISOString().split('T')[0];
+    };
+
+    const minDate = getTodayDateString();
+    const maxDate = getMaxDateString();
+  // ------------------------------------------------------------------
+
   // Libros prestados por el socio actual (incluye estado 'prestado' y 'pendiente_revision')
-  const userBorrowedBooks = books.filter(b => b.prestadoA_socioID === currentUser.id);
+    const userBorrowedBooks = books.filter(b => b.prestadoA_socioID === currentUser.id);
 
   // Calcula el libro seleccionado y su estado.
   const selectedBook = useMemo(() => {
@@ -59,12 +83,23 @@ const UserDashboard = ({ currentUser, books, setBooks }) => {
         return;
     }
 
+    // Validación extra para asegurar que la fecha no haya sido manipulada fuera de los límites del input.
+    const selectedDate = new Date(fechaFin);
+    const maxDateLimit = new Date(maxDate);
+    
+    // Si la fecha elegida es mayor a la fecha máxima, mostramos un error.
+    if (selectedDate > maxDateLimit) {
+        alert(`❌ El préstamo no puede exceder los 7 días. La fecha máxima de devolución es ${maxDate}.`);
+        return;
+    }
+
+
     const updatedBook = {
       ...selectedBook,
       estado: 'prestado',
       prestadoA_socioID: currentUser.id,
       fechaDevolucionEstimada: fechaFin,
-      fechaInicioPrestamo: new Date().toLocaleDateString('es-ES'), // <-- ¡Fecha de inicio guardada!
+      fechaInicioPrestamo: new Date().toLocaleDateString('es-ES'), 
     };
 
     const updatedBooksList = books.map(book => 
@@ -79,7 +114,7 @@ const UserDashboard = ({ currentUser, books, setBooks }) => {
 
   return (
     <div>
-      <h2>Mi Cuenta (Socio) 👤</h2>
+      <h2>Mi Cuenta 👤</h2>
       
       <hr/>
 
@@ -143,13 +178,16 @@ const UserDashboard = ({ currentUser, books, setBooks }) => {
 
         <br />
         <label>
-          Fecha Devolución:
+          Fecha Devolución (Máx 7 días):
           <input 
               type="date" 
               value={fechaFin} 
               onChange={(e) => setFechaFin(e.target.value)} 
               required
               disabled={!selectedBook || selectedBook.estado !== 'disponible'} 
+              // Atributos MIN y MAX aplicados al input date
+              min={minDate} // No permite seleccionar fechas pasadas
+              max={maxDate} // No permite seleccionar fechas más allá de 7 días
           />
         </label>
         <br />

@@ -1,38 +1,184 @@
+/* src/App.css */
+
+/* --- PALETA DE COLORES --- */
+:root {
+  --color-primary: #5d4037; /* Marrón Oscuro (Estantería) */
+  --color-secondary: #795548; /* Marrón Medio */
+  --color-text-light: #f5f5f5; /* Texto Claro */
+  --color-background: #efebe9; /* Fondo de Papel */
+  --color-border: #bcaaa4; /* Borde Suave */
+  --color-accent: #ffb74d; /* Dorado/Amarillo (Detalle) */
+}
+
+/* --- GLOBAL Y TIPOGRAFÍA --- */
+body {
+  font-family: 'Georgia', serif; /* Fuente clásica */
+  background-color: var(--color-background);
+  color: var(--color-primary);
+  margin: 0;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  max-width: 1200px;
+  margin: 0 auto;
   min-height: 100vh;
+  padding: 0 20px 40px;
+}
+
+/* --- ENCABEZADO Y NAVEGACIÓN --- */
+header {
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  padding: 15px 20px;
+  margin: 0 -20px 30px; /* Extiende a los bordes */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+header nav a {
+  color: var(--color-text-light);
+  text-decoration: none;
+  margin-right: 15px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+header nav a:hover {
+  background-color: var(--color-secondary);
+}
+
+header button {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+header span {
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+/* --- TÍTULOS Y CONTENIDO --- */
+h2, h3, h4 {
+  color: var(--color-secondary);
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: 5px;
+  margin-top: 30px;
+}
+
+main {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+/* --- FORMULARIOS --- */
+form input[type="text"], 
+form input[type="email"], 
+form input[type="date"], 
+form input[type="password"],
+form select {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0 15px 0;
+  display: inline-block;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+form button[type="submit"] {
+  background-color: var(--color-primary);
   color: white;
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.App-link {
-  color: #61dafb;
+form button[type="submit"]:hover:not(:disabled) {
+  background-color: var(--color-secondary);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+form button[type="submit"]:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* --- TABLAS (Inventario y Préstamos) --- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+th, td {
+  border: 1px solid var(--color-border);
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: var(--color-secondary);
+  color: var(--color-text-light);
+  font-weight: normal;
+}
+
+tr:nth-child(even) {
+  background-color: #f7f3f1; /* Rayado suave */
+}
+
+/* --- BOTONES DE ACCIÓN EN TABLAS --- */
+table button {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8em;
+  transition: opacity 0.3s;
+}
+
+table button:hover {
+  opacity: 0.8;
+}
+
+/* --- LISTAS DE PRÉSTAMO (Dashboard) --- */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  background-color: #fff8e1; /* Fondo de pergamino */
+  border: 1px solid var(--color-accent);
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Estilos específicos para los estados de libro */
+.text-green { color: green; font-weight: bold; }
+.text-red { color: red; font-weight: bold; }
+.text-blue { color: blue; font-weight: bold; }
+
+/* Separador horizontal */
+hr {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--color-border), rgba(0, 0, 0, 0));
+  margin: 25px 0;
 }

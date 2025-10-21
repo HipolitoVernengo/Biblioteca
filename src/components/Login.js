@@ -4,18 +4,27 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = ({ users, setCurrentUser }) => {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState(''); // <-- Estado para Contraseña
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const user = users.find(u => u.email === email); // Busca el usuario por email
+    setError(''); // Limpiar errores previos
+
+    const user = users.find(u => u.email === email);
 
     if (user) {
-      setCurrentUser(user); // Guarda el usuario en el estado global
-      // Redirige
-      navigate(user.role === 'admin' ? '/admin' : '/dashboard');
+        // 1. Verificar la contraseña
+        if (user.password === password) {
+            setCurrentUser(user); 
+            // Redirigir según el rol
+            navigate(user.role === 'admin' ? '/admin' : '/dashboard');
+        } else {
+            setError('❌ Contraseña incorrecta.');
+        }
     } else {
-      alert('Email no encontrado. Prueba con: ana@socio.com o admin@biblioteca.com');
+      setError('❌ Email no encontrado.');
     }
   };
 
@@ -25,9 +34,26 @@ const Login = ({ users, setCurrentUser }) => {
       <form onSubmit={handleSubmit}>
         <label>
           Email:
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input 
+            type="email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            required 
+          />
         </label>
-        <button type="submit" style={{ marginLeft: '10px' }}>Entrar</button>
+        <br />
+        <label>
+          Contraseña:
+          <input 
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
+          />
+        </label>
+        <br />
+        <button type="submit">Entrar</button>
+        {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
       </form>
     </div>
   );

@@ -5,41 +5,42 @@ import { useNavigate } from 'react-router-dom';
 const Register = ({ users, setUsers, setCurrentUser }) => {
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
-  const [dni, setDni] = useState(''); // <-- Nuevo campo DNI
+  const [dni, setDni] = useState('');
+  const [password, setPassword] = useState(''); // <-- Estado para Contraseña
   const navigate = useNavigate();
 
   const handleRegister = (e) => {
     e.preventDefault();
 
-    // 1. **VERIFICAR DNI DUPLICADO**
+    // 1. VERIFICAR DNI DUPLICADO
     const dniExists = users.some(user => user.dni === dni);
     if (dniExists) {
       alert('❌ Error de Registro: Ya existe un socio registrado con este DNI.');
       return;
     }
     
-    // 2. **GENERAR ID DE SOCIO ÚNICO**
-    // Encontramos el ID más alto y le sumamos 1. Si no hay usuarios, empezamos en 1.
+    // 2. GENERAR ID DE SOCIO ÚNICO
     const maxId = users.length > 0 ? Math.max(...users.map(u => u.id)) : 0;
     const newId = maxId + 1;
 
-    // 3. **CREAR NUEVO SOCIO**
+    // 3. CREAR NUEVO SOCIO (Incluyendo la contraseña)
     const newUser = {
       id: newId,
-      nombre: nombre + ' (Socio)', // Agregamos (Socio) para distinguirlo en el Admin Panel
+      nombre: nombre + ' (Socio)',
       email,
-      dni, // Guardamos el DNI
+      dni,
+      password, // <-- Guardar Contraseña
       role: 'user',
       multa: 0,
     };
 
-    // 4. **ACTUALIZAR ESTADO**
+    // 4. ACTUALIZAR ESTADO
     setUsers([...users, newUser]);
-    setCurrentUser(newUser); // Inicia sesión automáticamente
+    setCurrentUser(newUser); 
     
     alert(`✅ ¡Registro Exitoso! Bienvenido, ${nombre}. Tu ID de socio es ${newId}.`);
 
-    // 5. **REDIRECCIÓN**
+    // 5. REDIRECCIÓN
     navigate('/dashboard');
   };
 
@@ -68,7 +69,7 @@ const Register = ({ users, setUsers, setCurrentUser }) => {
         </label>
         <br />
         <label>
-          DNI: {/* <-- Nuevo campo */}
+          DNI:
           <input 
             type="text" 
             value={dni} 
@@ -76,6 +77,16 @@ const Register = ({ users, setUsers, setCurrentUser }) => {
             required 
             pattern="\d*" 
             title="Solo se permiten dígitos para el DNI"
+          />
+        </label>
+        <br />
+        <label>
+          Contraseña:
+          <input 
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
           />
         </label>
         <br />
